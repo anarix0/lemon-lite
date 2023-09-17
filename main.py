@@ -4,7 +4,6 @@ from discord import app_commands
 
 prefix = ".."
 
-
 class Client(commands.Bot):
 
   def __init__(self):
