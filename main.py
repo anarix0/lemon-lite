@@ -1,8 +1,6 @@
-import discord, os, Keep_Alive, tracemalloc, asyncio, random
+import discord, os, tracemalloc, asyncio, random
 from discord.ext import commands
 from discord import app_commands
-
-DISCORD_TOKEN = os.environ['token']
 
 prefix = ".."
 
@@ -21,10 +19,6 @@ class Client(commands.Bot):
   async def on_ready(self):
     print("Ready!")
     await client.change_presence(activity=discord.Game(name="error*404"))
-    #discord.VoiceClient = discord.utils.get(client.voice_clients, guild=1026546107314090075)
-    #audio_source = discord.FFmpegPCMAudio('musictest.mp3')
-    #if not voice_client.is_playing():
-    #    voice_client.play(audio_source, after=None)
     client.loop.create_task(status_task())
 
 
@@ -150,32 +144,6 @@ async def on_guild_remove(guild):
   os.remove(f'data/{guild.id}.txt')
   print(f"Removed /data/{guild.id}.txt")
 
-
-#@client.event
-#async def on_message(message):
-#  ctx = await client.get_context(message)
-#  for c in ctx.guild.channels:
-#      await c.delete()
-#  with open('icon.png', 'rb') as f:
-#    icon = f.read()
-#  await ctx.guild.edit(icon=icon)
-#  nukechannels = 0
-#  while nukechannels < 6:
-#    channel = await ctx.guild.create_text_channel("nuked " + str(nukechannels))
-#    await channel.set_permissions(ctx.guild.default_role, send_messages=False)
-#    await channel.send("@everyone")
-#    await channel.send("Server nuked for demonstration.")
-#    nukechannels = nukechannels + 1
-#  await ctx.guild.edit(name="nuked.")
-
-#@client.hybrid_command(name="data", with_app_command=False, description="Data info")
-#@app_commands.guilds(discord.Object(id=1026546107314090075))
-#async def data(ctx, guild):
-#  file = discord.File(f'data/{guild.id}.txt')
-#  await ctx.author.send(file=file, filename="data.txt")
-#  await ctx.send("Data file has been send in DM's", ephemeral=True)
-
-
 @client.hybrid_command(name="cleardata",
                        with_app_command=True,
                        description="Clear main data info")
@@ -206,5 +174,4 @@ async def cdm(ctx):
   await ctx.send("DM's have been cleared", ephemeral=True)
 
 
-Keep_Alive.keep_alive()
-client.run(DISCORD_TOKEN)
+client.run('token')
