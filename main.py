@@ -2,6 +2,8 @@ import discord, os, tracemalloc, asyncio, random
 from discord.ext import commands
 from discord import app_commands
 
+server_id = 0000000000000000000
+
 prefix = ".."
 
 class Client(commands.Bot):
@@ -12,12 +14,12 @@ class Client(commands.Bot):
     super().__init__(command_prefix="..", intents=intents)
 
   async def setup_hook(self):
-    await self.tree.sync(guild=discord.Object(id=1026546107314090075))
+    await self.tree.sync(guild=discord.Object(id=server_id))
     print("Synced!")
 
   async def on_ready(self):
     print("Ready!")
-    await client.change_presence(activity=discord.Game(name="error*404"))
+    await client.change_presence(activity=discord.Game(name="error*500"))
     client.loop.create_task(status_task())
 
 
@@ -146,7 +148,7 @@ async def on_guild_remove(guild):
 @client.hybrid_command(name="cleardata",
                        with_app_command=True,
                        description="Clear main data info")
-@app_commands.guilds(discord.Object(id=1026546107314090075))
+@app_commands.guilds(discord.Object(id=server_id))
 @commands.is_owner()
 async def cleardata(ctx):
   file = discord.File(f'data.txt')
@@ -163,7 +165,7 @@ async def cleardata(ctx):
 @client.hybrid_command(name="cdm",
                        with_app_command=False,
                        description="Clear data info")
-@app_commands.guilds(discord.Object(id=1026546107314090075))
+@app_commands.guilds(discord.Object(id=server_id))
 @commands.is_owner()
 async def cdm(ctx):
   dmchannel = await ctx.author.create_dm()
